@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashwini Kumar - Tech Stack</title>
+    <title>Ashwini Kumar - Experience</title>
     <!-- External CSS libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
-        /* Custom styles for the portfolio page */
+        /* Custom styles for the experience page */
         body {
             display: flex;
             flex-direction: column;
@@ -67,22 +67,23 @@
             flex-direction: column;
             height: 100%;
         }
-        .tech-icon {
-            font-size: 2rem;
-            margin-bottom: 15px;
+        .company-logo {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #666;
+            border-radius: 10px;
         }
-        .card-title {
-            margin-bottom: 15px;
+        .card-title, .card-text {
+            text-align: center;
         }
         .card-text {
             flex-grow: 1;
-        }
-        .tech-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .tech-list li {
-            margin-bottom: 5px;
         }
         footer {
             background-color: #581d78;
@@ -102,17 +103,30 @@
         .counter {
             margin-top: 5px;
         }
-
-        /* Styling done for two column layout for libraries card */
-        .two-column-list {
-            columns: 2;
-            -webkit-columns: 2;
-            -moz-columns: 2;
-            list-style-type: none;
-            padding-left: 0;
+        .experience-card {
+            position: relative;
+            height: 100%;
         }
-        .two-column-list li {
-            margin-bottom: 5px;
+        .experience-details {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: inherit;
+            border: 1px solid rgba(0,0,0,.125);
+            border-top: none;
+            border-radius: 0 0 0.25rem 0.25rem;
+            padding: 1rem;
+            z-index: 10;
+        }
+        .card-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .toggle-details {
+            margin-top: auto;
         }
     </style>
 </head>
@@ -139,10 +153,10 @@
                         <a class="nav-link" href="projects.html">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="tech_stack.html">Tech Stack</a>
+                        <a class="nav-link" href="tech_stack.html">Tech Stack</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="experience.html">Experience</a>
+                        <a class="nav-link active" href="experience.html">Experience</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="videos.html">Videos</a>
@@ -164,141 +178,91 @@
     </nav>
 
     <!-- Header Section -->
-    <!-- This section contains the main heading for the tech stack page -->
     <header class="text-white py-5" style="background-color: #581d78;">
         <div class="container">
-            <h1 class="display-4 mb-0">Tech Stack</h1>
-            <p class="lead">Exploring the technologies that power my DevOps and Automation journey</p>
+            <h1 class="display-4 mb-0">Work Experience</h1>
+            <p class="lead">My professional journey in the tech industry</p>
         </div>
     </header>
 
     <!-- Main Content -->
-    <!-- This section contains the main content of the page, including the tech stack cards -->
     <main class="container my-5">
-        <section id="tech-stack">
-            <h2 class="mb-4" data-aos="fade-down">My DevOps and Automation Tech Stack</h2>
+        <section id="experience">
+            <!-- <h2 class="mb-4" data-aos="fade-down">Professional Experience</h2> -->
             <div class="row">
-
-                <!-- Python Automation Development -->
-                <!-- This card represents skills in Python Automation Development -->
+                <!-- Company 1 -->
                 <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="card">
+                    <div class="card experience-card">
                         <div class="card-body">
-                            <i class="bi bi-code-slash tech-icon"></i>
-                            <h5 class="card-title">Python Automation</h5>
-                            <div class="card-text">
-                                <ul class="tech-list">
-                                    <li>Python 3.x</li>
-                                    <li>Libraries:</li>
-                                </ul>
-                                <ul class="two-column-list">
-                                    <li>- Selenium</li>
-                                    <li>- PyAutoGUI</li>
-                                    <li>- Pytesseract</li>
-                                    <li>- Pandas</li>
-                                    <li>- Requests</li>
-                                </ul>
+                            <div class="card-content">
+                                <div class="company-logo">Logo 1</div>
+                                <h5 class="card-title">HP Inc.</h5>
+                                <p class="card-text">2018 - 2022</p>
+                                <button class="btn btn-primary toggle-details" data-target="company1-details">Show More</button>
+                            </div>
+                        </div>
+                        <div id="company1-details" class="experience-details">
+                            <div class="mb-3">
+                                <p><strong>Duration:</strong> 2018 - 2021 (2 years 6 months)</p>
+                                <p><strong>Designation:</strong> RPA developer for Customer Service team</p>
+                                <p><strong>Contract With:</strong> JoulestoWatts Business Solutions Pvt Ltd.</p>
+                                <p><strong>Location:</strong> Bengaluru</p>
+                            </div>
+                            <div>
+                                <p><strong>Duration:</strong> 2021-2022 (1.5 years)</p>
+                                <p><strong>Designation:</strong> Automation developer for Field Operations team</p>
+                                <p><strong>Contract With:</strong> Quess Corp Ltd.</p>
+                                <p><strong>Location:</strong> Bengaluru</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Cloud Platforms -->
-                <!-- This card represents skills in cloud platforms -->
-                <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="card">
-                        <div class="card-body">
-                            <i class="bi bi-cloud tech-icon"></i>
-                            <h5 class="card-title">Cloud Platforms</h5>
-                            <div class="card-text">
-                                <ul class="tech-list">
-                                    <li>Azure (Primary focus)</li>
-                                    <li>Google Cloud Platform (GCP)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Containerization -->
-                <!-- This card represents skills in containerization -->
-                <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="card">
-                        <div class="card-body">
-                            <i class="bi bi-boxes tech-icon"></i>
-                            <h5 class="card-title">Containerization</h5>
-                            <div class="card-text">
-                                <ul class="tech-list">
-                                    <li>Docker</li>
-                                    <li>Container deployment on:</li>
-                                    <li>- Cloud platforms</li>
-                                    <li>- Local servers</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Continuous Deployment -->
-                <!-- This card represents skills in Continuous Deployment -->
-                <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="card">
-                        <div class="card-body">
-                            <i class="bi bi-arrow-repeat tech-icon"></i>
-                            <h5 class="card-title">Continuous Deployment</h5>
-                            <div class="card-text">
-                                <ul class="tech-list">
-                                    <li>Harness Pipelines</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Monitoring & Analytics -->
-                <!-- This card represents skills in Monitoring and Analytics -->
-                <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="card">
-                        <div class="card-body">
-                            <i class="bi bi-graph-up tech-icon"></i>
-                            <h5 class="card-title">Monitoring & Analytics</h5>
-                            <div class="card-text">
-                                <ul class="tech-list">
-                                    <li>Harness (for monitoring)</li>
-                                    <li>Metabase (for analytics)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 
 
-                <!-- Database Technologies -->
-                <!-- This card represents skills in database technologies -->
-                <div class="col-md-4 mb-4" data-aos="fade-up">
-                    <div class="card">
+                <!-- Company 2 -->
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card experience-card">
                         <div class="card-body">
-                            <i class="bi bi-database tech-icon"></i>
-                            <h5 class="card-title">Database Technologies</h5>
-                            <div class="card-text">
-                                <ul class="tech-list">
-                                    <li>PostgreSQL</li>
-                                    <li>- Data modeling</li>
-                                    <li>- Installation</li>
-                                    <li>- User management</li>                                    
-                                </ul>
+                            <div class="card-content">
+                                <div class="company-logo">Logo 2</div>
+                                <h5 class="card-title">Dell Inc.</h5>
+                                <p class="card-text">2022 - 2023</p>
+                                <button class="btn btn-primary toggle-details" data-target="company2-details">Show More</button>
                             </div>
                         </div>
+                        <div id="company2-details" class="experience-details">
+                            <p><strong>Duration:</strong> 2022-2023 (0.8 years)</p>
+                            <p><strong>Designation:</strong>  Embedded Tester</p>
+                            <p><strong>Contract With:</strong> UST Global Technology Services (India) Pvt Ltd.</p>
+                            <p><strong>Location:</strong> Bengaluru</p>
+                        </div>
                     </div>
-                </div>    
+                </div>
 
+                <!-- Company 3 -->
+                <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card experience-card">
+                        <div class="card-body">
+                            <div class="card-content">
+                                <div class="company-logo">Logo 3</div>
+                                <h5 class="card-title">FIS</h5>
+                                <p class="card-text">2023 - Present</p>
+                                <button class="btn btn-primary toggle-details" data-target="company3-details">Show More</button>
+                            </div>
+                        </div>
+                        <div id="company3-details" class="experience-details">
+                            <p><strong>Duration:</strong> 2023 - Present</p>
+                            <p><strong>Designation:</strong> Automation Engineer</p>
+                            <p><strong>Contract With:</strong> Orayaah Consulting, LLC</p>
+                            <p><strong>Location:</strong> Remote</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <!-- This section contains the footer with copyright information and visit counter -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -316,7 +280,6 @@
     </footer>
 
     <!-- JavaScript Libraries -->
-    <!-- This section includes the necessary JavaScript libraries and custom scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
@@ -336,6 +299,21 @@
             } else {
                 icon.classList.replace('bi-sun-fill', 'bi-moon-fill');
             }
+        });
+
+        // Toggle experience details
+        document.querySelectorAll('.toggle-details').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const targetElement = document.getElementById(targetId);
+                if (targetElement.style.display === 'none' || targetElement.style.display === '') {
+                    targetElement.style.display = 'block';
+                    this.textContent = 'Show Less';
+                } else {
+                    targetElement.style.display = 'none';
+                    this.textContent = 'Show More';
+                }
+            });
         });
     </script>
 </body>
