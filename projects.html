@@ -94,6 +94,7 @@
         }
         .project-section {
             display: none;
+            transition: transform 0.5s ease-in-out;
         }
         .project-section.active {
             display: block;
@@ -139,6 +140,11 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0,0,0,0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal.show {
+            opacity: 1;
         }
         .modal-content {
             background-color: #fefefe;
@@ -147,18 +153,25 @@
             border: 1px solid #888;
             width: 80%;
             max-width: 600px;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
         }
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            cursor: pointer;
         }
         .close:hover,
         .close:focus {
             color: black;
             text-decoration: none;
-            cursor: pointer;
         }
         .dark-mode .modal-content {
             background-color: #333;
@@ -166,6 +179,55 @@
         }
         .dark-mode .close {
             color: #f8f9fa;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .modal-body h3 {
+            font-size: 1.2rem;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        .slide-out-left {
+            animation: slideOutLeft 0.5s forwards;
+        }
+        .slide-in-right {
+            animation: slideInRight 0.5s forwards;
+        }
+        .slide-out-right {
+            animation: slideOutRight 0.5s forwards;
+        }
+        .slide-in-left {
+            animation: slideInLeft 0.5s forwards;
+        }
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); }
+            to { transform: translateX(-200%); }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(200%); }
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); }
+            to { transform: translateX(200%); }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-200%); }
+            to { transform: translateX(0); }
+        }
+        
+        .slide-out-left, .slide-out-right, .slide-in-left, .slide-in-right {
+            animation-duration: 0.5s;
+            animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
         }
     </style>
 </head>
@@ -230,7 +292,7 @@
             <button class="toggle-btn active" id="professionalBtn">Professional</button>
             <button class="toggle-btn" id="personalBtn">Personal</button>
         </div>
-    
+
         <!-- Professional Projects Section -->
         <section id="professional-projects" class="project-section active">
             <h2 class="mb-4" data-aos="fade-down">Professional Projects</h2>
@@ -381,9 +443,18 @@
     <!-- Modal for Project Details -->
     <div id="projectModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <div id="modalContent"></div>
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h3><strong>Issue</strong></h3>
+                <p id="modalIssue"></p>
+                <h3><strong>Challenges</strong></h3>
+                <p id="modalChallenges"></p>
+                <h3><strong>Results</strong></h3>
+                <p id="modalResults"></p>
+            </div>
         </div>
     </div>
 
@@ -432,90 +503,139 @@
         const professionalProjects = document.getElementById('professional-projects');
         const personalProjects = document.getElementById('personal-projects');
 
+        function toggleProjects(showSection, hideSection, direction) {
+            hideSection.classList.add(direction === 'left' ? 'slide-out-left' : 'slide-out-right');
+            setTimeout(() => {
+                hideSection.classList.remove('active');
+                hideSection.classList.remove(direction === 'left' ? 'slide-out-left' : 'slide-out-right');
+                showSection.classList.add(direction === 'left' ? 'slide-in-right' : 'slide-in-left');
+                showSection.classList.add('active');
+                setTimeout(() => {
+                    showSection.classList.remove(direction === 'left' ? 'slide-in-right' : 'slide-in-left');
+                }, 500);
+            }, 500);
+        }
+
         professionalBtn.addEventListener('click', function() {
-            professionalProjects.classList.add('active');
-            personalProjects.classList.remove('active');
-            this.classList.add('active');
-            personalBtn.classList.remove('active');
+            if (!professionalProjects.classList.contains('active')) {
+                toggleProjects(professionalProjects, personalProjects, 'right');
+                this.classList.add('active');
+                personalBtn.classList.remove('active');
+            }
         });
 
         personalBtn.addEventListener('click', function() {
-            personalProjects.classList.add('active');
-            professionalProjects.classList.remove('active');
-            this.classList.add('active');
-            professionalBtn.classList.remove('active');
+            if (!personalProjects.classList.contains('active')) {
+                toggleProjects(personalProjects, professionalProjects, 'left');
+                this.classList.add('active');
+                professionalBtn.classList.remove('active');
+            }
         });
 
         // Project details popup
         const modal = document.getElementById('projectModal');
         const modalTitle = document.getElementById('modalTitle');
-        const modalContent = document.getElementById('modalContent');
+        const modalIssue = document.getElementById('modalIssue');
+        const modalChallenges = document.getElementById('modalChallenges');
+        const modalResults = document.getElementById('modalResults');
         const closeBtn = document.getElementsByClassName('close')[0];
 
         const projectDetails = {
             'cloud-migration': {
                 title: 'Cloud Migration and Optimization',
-                content: 'Led a large-scale migration of on-premises infrastructure to Azure, resulting in a 30% cost reduction and 99.99% uptime post-migration. Implemented cloud-native solutions and optimized resource allocation for improved performance and scalability.'
+                issue: 'Legacy on-premises infrastructure was becoming costly and difficult to scale.',
+                challenges: 'Ensuring minimal downtime during migration, adapting applications for cloud architecture, and training staff on new cloud technologies.',
+                results: 'Achieved 30% cost reduction, 99.99% uptime post-migration, and improved scalability and performance of applications.'
             },
             'cicd-modernization': {
                 title: 'CI/CD Pipeline Modernization',
-                content: 'Redesigned and implemented a modern CI/CD pipeline for a microservices-based application, reducing deployment time by 70% and increasing deployment frequency by 5x. Integrated various tools including Jenkins, Docker, and Kubernetes for seamless automation.'
+                issue: 'Slow and error-prone manual deployment processes were hindering productivity and release cycles.',
+                challenges: 'Integrating various tools, automating complex deployment scenarios, and ensuring security throughout the pipeline.',
+                results: 'Reduced deployment time by 70%, increased deployment frequency by 5x, and significantly reduced deployment-related errors.'
             },
             'iac-implementation': {
                 title: 'Infrastructure as Code Implementation',
-                content: 'Spearheaded the adoption of Infrastructure as Code (IaC) practices using Terraform and Ansible, reducing infrastructure provisioning time by 80% and eliminating configuration drift. Trained the team on IaC best practices and version control for infrastructure.'
+                issue: 'Manual infrastructure provisioning and configuration led to inconsistencies and time-consuming processes.',
+                challenges: 'Selecting appropriate IaC tools, converting existing infrastructure to code, and training the team on IaC practices.',
+                results: 'Reduced infrastructure provisioning time by 80%, eliminated configuration drift, and improved overall infrastructure reliability.'
             },
             'legacy-containerization': {
                 title: 'Containerization of Legacy Applications',
-                content: 'Successfully containerized legacy applications running on outdated infrastructure, improving application performance by 40% and reducing infrastructure costs by 25%. Implemented Docker and Kubernetes for efficient container orchestration and scaling.'
+                issue: 'Legacy applications were difficult to maintain, scale, and deploy consistently across environments.',
+                challenges: 'Adapting legacy applications for containerization, managing dependencies, and ensuring performance in containerized environments.',
+                results: 'Improved application performance by 40%, reduced infrastructure costs by 25%, and significantly improved deployment consistency.'
             },
             'automated-security': {
                 title: 'Automated Security Compliance Checks',
-                content: 'Implemented automated security compliance checks in the CI/CD pipeline, reducing security vulnerabilities by 60% and ensuring continuous compliance with industry standards.'
+                issue: 'Manual security checks were time-consuming and prone to human error, leading to potential vulnerabilities.',
+                challenges: 'Integrating security checks into the CI/CD pipeline, addressing false positives, and ensuring minimal impact on deployment speed.',
+                results: 'Reduced security vulnerabilities by 60%, increased compliance with industry standards, and improved overall security posture.'
             },
             'multi-cloud-dr': {
                 title: 'Multi-Cloud Disaster Recovery Solution',
-                content: 'Designed and implemented a multi-cloud disaster recovery solution, achieving an RPO of 15 minutes and RTO of 1 hour. Utilized cloud-native services for seamless failover and data replication.'
+                issue: 'Existing disaster recovery solution was slow, unreliable, and limited to a single cloud provider.',
+                challenges: 'Designing a multi-cloud architecture, ensuring data consistency across clouds, and optimizing failover processes.',
+                results: 'Achieved an RPO of 15 minutes and RTO of 1 hour, improved reliability, and reduced dependency on a single cloud provider.'
             },
             'microservices-transition': {
                 title: 'Microservices Architecture Transition',
-                content: 'Led the transition from a monolithic to a microservices architecture, improving scalability and reducing deployment times by 85%. Implemented service mesh for improved inter-service communication and monitoring.'
+                issue: 'Monolithic architecture was hindering scalability and slowing down development cycles.',
+                challenges: 'Decomposing the monolith, managing inter-service communication, and ensuring data consistency across microservices.',
+                results: 'Improved scalability, reduced deployment times by 85%, and increased development team productivity.'
             },
             'devops-transformation': {
                 title: 'DevOps Culture Transformation',
-                content: 'Spearheaded a company-wide DevOps culture transformation, resulting in a 50% increase in collaboration between development and operations teams. Introduced agile methodologies and continuous improvement practices.'
+                issue: 'Siloed development and operations teams were causing inefficiencies and conflicts.',
+                challenges: 'Changing organizational culture, implementing new processes, and providing training on DevOps practices.',
+                results: '50% increase in collaboration between development and operations teams, faster time-to-market, and improved overall product quality.'
             },
             'home-kubernetes': {
                 title: 'Home Lab Kubernetes Cluster',
-                content: 'Built a fully functional, low-power Kubernetes cluster using Raspberry Pis, implementing GitOps practices for personal projects and continuous learning. Experimented with various cloud-native technologies and monitoring solutions.'
+                issue: 'Needed a practical, hands-on environment to experiment with Kubernetes and cloud-native technologies.',
+                challenges: 'Building a low-power, cost-effective cluster, implementing proper networking, and ensuring cluster stability.',
+                results: 'Created a fully functional Kubernetes cluster using Raspberry Pis, implemented GitOps practices, and gained practical experience with various cloud-native technologies.'
             },
             'smart-home': {
                 title: 'Automated Smart Home System',
-                content: 'Developed a comprehensive smart home automation system, integrating various IoT devices and creating a user-friendly interface. Implemented advanced scenarios and energy-saving routines, resulting in a 25% reduction in energy consumption.'
+                issue: 'Wanted to create a more efficient and automated home environment.',
+                challenges: 'Integrating various IoT devices, ensuring system security, and creating a user-friendly interface.',
+                results: 'Developed a comprehensive smart home system, implemented energy-saving routines, and achieved a 25% reduction in energy consumption.'
             },
             'cloud-storage': {
                 title: 'Personal Cloud Storage Solution',
-                content: 'Created a secure, self-hosted cloud storage system with 99.9% uptime and end-to-end encryption. Implemented robust backup solutions and easy access across devices while ensuring data privacy and security.'
+                issue: 'Needed a secure, self-hosted alternative to commercial cloud storage services.',
+                challenges: 'Ensuring data security, implementing robust backup solutions, and providing easy access across devices.',
+                results: 'Created a secure cloud storage system with 99.9% uptime, end-to-end encryption, and seamless access across multiple devices.'
             },
             'blog-deployment': {
                 title: 'Automated Blog Deployment Pipeline',
-                content: 'Implemented a GitOps-based workflow for personal blog deployment, reducing publishing time from hours to minutes. Integrated content management with version control and automated the deployment process using CI/CD practices.'
+                issue: 'Manual blog deployment process was time-consuming and error-prone.',
+                challenges: 'Integrating content management with version control, automating the build and deployment process, and ensuring content integrity.',
+                results: 'Implemented a GitOps-based workflow, reduced publishing time from hours to minutes, and improved overall content management efficiency.'
             },
             'raspberry-pi-weather': {
                 title: 'Raspberry Pi Weather Station',
-                content: 'Built a Raspberry Pi-based weather station that collects and analyzes local weather data, displaying results on a web dashboard. Implemented data logging, visualization, and alerting features.'
+                issue: 'Wanted to collect and analyze local weather data for personal use and learning.',
+                challenges: 'Selecting and integrating appropriate sensors, ensuring accurate data collection, and creating a user-friendly dashboard.',
+                results: 'Built a functional weather station that collects and analyzes local weather data, with a web dashboard for easy data visualization.'
             },
             'containerized-media': {
                 title: 'Containerized Media Server',
-                content: 'Developed a containerized media server using Docker, enabling easy deployment and management of various media applications. Implemented automatic updates and backup solutions for enhanced reliability.'
+                issue: 'Needed a flexible and easily maintainable home media server solution.',
+                challenges: 'Containerizing various media applications, managing data persistence, and ensuring optimal performance.',
+                results: 'Developed a containerized media server using Docker, enabling easy deployment and management of various media applications.'
             },
             'network-monitoring': {
                 title: 'Home Network Monitoring System',
-                content: 'Created a comprehensive home network monitoring system using open-source tools to track performance, security, and device connectivity. Implemented alerting and visualization for network insights.'
+                issue: 'Lacked visibility into home network performance and potential security issues.',
+                challenges: 'Selecting appropriate monitoring tools, setting up data collection without impacting network performance, and creating meaningful alerts.',
+                results: 'Created a comprehensive home network monitoring system that tracks performance, security, and device connectivity, with customized alerting and visualization.'
             },
             'finance-tracker': {
                 title: 'Automated Personal Finance Tracker',
-                content: 'Developed a Python-based personal finance tracker that automatically categorizes expenses and generates monthly reports. Integrated with bank APIs for real-time transaction tracking and implemented machine learning for improved categorization accuracy.'
+                issue: 'Manual tracking of personal finances was time-consuming and prone to errors.',
+                challenges: 'Integrating with bank APIs securely, accurately categorizing transactions, and generating meaningful financial reports.',
+                results: 'Developed a Python-based finance tracker that automatically categorizes expenses, generates monthly reports, and provides real-time insights into personal finances.'
             }
         };
 
@@ -524,18 +644,26 @@
                 const projectId = this.getAttribute('data-project');
                 const project = projectDetails[projectId];
                 modalTitle.textContent = project.title;
-                modalContent.textContent = project.content;
+                modalIssue.textContent = project.issue;
+                modalChallenges.textContent = project.challenges;
+                modalResults.textContent = project.results;
                 modal.style.display = 'block';
+                setTimeout(() => {
+                    modal.classList.add('show');
+                }, 10);
             });
         });
 
         closeBtn.onclick = function() {
-            modal.style.display = 'none';
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
         }
 
         window.onclick = function(event) {
             if (event.target == modal) {
-                modal.style.display = 'none';
+                closeBtn.onclick();
             }
         }
     </script>
