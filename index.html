@@ -160,6 +160,39 @@
         .counter {
             margin-top: 5px; /* Reduced margin for tighter spacing */
         }
+
+
+        /* New styles for the video section */
+        .video-section {
+            background-color: #e0e0e0; /* A darker shade of grey */
+            padding: 50px 0;
+            margin-top: 50px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Dark mode styles for video section */
+        .dark-mode .video-section {
+            background-color: #2a2a2a;
+        }
+
+
     </style>
 </head>
 <body>
@@ -228,6 +261,21 @@
             </div>
         </div>
     </header>
+
+
+    <section class="video-section">
+        <div class="container">
+            <h2 class="text-center mb-4" data-aos="fade-up">A Brief Introduction</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8" data-aos="zoom-in">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/xk4XIdrr30M?rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
 
     <!-- Main Content -->
     <main class="container my-5">
